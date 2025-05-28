@@ -1,3 +1,5 @@
+use std::io;
+
 use rand::Rng;
 
 // #[derive(Debug)]
@@ -46,5 +48,18 @@ impl Account {
 }
 
 fn main() {
-    println!("{}", generate_account())
+ let action_btn = vec!["create account", "Deposit", "Withdraw", "Check balance"];
+    
+    for (index, value) in action_btn.iter().enumerate() {
+        println!("{}: {}", index + 1, value);
+    };
+
+    println!("Choose one of the following...");
+
+    let mut input = String::new();
+
+    io::stdin().read_line(&mut input).expect("failed while reading the input");
+
+    // let mut new_account = Account::create_account(first_name, second_name, age, balance, account_number)
+
 }
