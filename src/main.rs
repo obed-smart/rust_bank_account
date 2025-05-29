@@ -1,9 +1,8 @@
-use std::io;
+use std::io::{self, Write};
 
 use rand::Rng;
 
-// #[derive(Debug)]
-
+#[derive(Debug)]
 struct Account {
     first_name: String,
     second_name: String,
@@ -16,6 +15,18 @@ fn generate_account() -> String {
     let mut rng = rand::thread_rng();
 
     (0..10).map(|_| rng.gen_range(0..10).to_string()).collect()
+}
+fn custom_input(display_text: &str) -> String {
+    println!("{display_text}");
+    io::stdout().flush().unwrap();
+
+    let mut input = String::new();
+
+    io::stdin()
+        .read_line(&mut input)
+        .expect("failed to read input");
+
+    input.trim().to_string()
 }
 
 impl Account {
@@ -48,18 +59,54 @@ impl Account {
 }
 
 fn main() {
- let action_btn = vec!["create account", "Deposit", "Withdraw", "Check balance"];
-    
+    let action_btn = vec![
+        "create account",
+        "Deposit",
+        "Withdraw",
+        "Check balance",
+        "cancle",
+    ];
+
     for (index, value) in action_btn.iter().enumerate() {
         println!("{}: {}", index + 1, value);
+    }
+    let selected_input: usize = 'get_input: loop {
+        let input = custom_input("Choose one of the following...");
+
+        match input.trim().parse() {
+            Ok(number) => {
+                if number <= action_btn.len() {
+                    println!("{number}");
+                    break 'get_input number; 
+                } else if number < 1 {
+                    println!("you can not go below 1");
+                    continue;
+                } else {
+                    println!(
+                        "Input number is out of rang! please enter number in rang of 1 to {}",
+                        action_btn.len() - 1
+                    );
+                    continue;
+                }
+            }
+
+            Err(_) => {
+                println!("invalid input! please select a valid input");
+
+                continue;
+            }
+        };
     };
 
-    println!("Choose one of the following...");
-
-    let mut input = String::new();
-
-    io::stdin().read_line(&mut input).expect("failed while reading the input");
+    
+    match selected_input {
+        1 => println!("deposit"),
+        2 => println!("2"),
+        3 => println!("3"),
+        4 => println!("4"),
+        5 => println!("cancel"),
+        _ =>  println!("erro"),
+    }
 
     // let mut new_account = Account::create_account(first_name, second_name, age, balance, account_number)
-
 }
