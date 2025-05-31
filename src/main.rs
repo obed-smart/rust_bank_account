@@ -1,4 +1,7 @@
-use std::io::{self, Write};
+use std::{
+    error,
+    io::{self, Write},
+};
 
 use rand::Rng;
 
@@ -77,10 +80,7 @@ fn main() {
             Ok(number) => {
                 if number <= action_btn.len() {
                     println!("{number}");
-                    break 'get_input number; 
-                } else if number < 1 {
-                    println!("you can not go below 1");
-                    continue;
+                    break 'get_input number;
                 } else {
                     println!(
                         "Input number is out of rang! please enter number in rang of 1 to {}",
@@ -98,15 +98,36 @@ fn main() {
         };
     };
 
-    
     match selected_input {
-        1 => println!("deposit"),
-        2 => println!("2"),
+        1 => {
+            let first_name = custom_input("Enter your first name below.");
+
+            let second_name = custom_input("Enter your second name below");
+
+            let age = custom_input("Enter your age below");
+
+            let age: u32 = match age.trim().parse() {
+                Ok(num) => num,
+                Err(_) => {
+                    println!("invalid input! please enter a number on the age");
+
+                    return;
+                }
+            };
+
+            let new_account = Account::create_account(first_name, second_name, age, 0.0, generate_account());
+
+            println!("New account created ✅");
+            println!("Account: {:#?}", new_account);
+        }
+        2 => {
+            println!("Enter tou name")
+        }
         3 => println!("3"),
         4 => println!("4"),
         5 => println!("cancel"),
-        _ =>  println!("erro"),
+        _ => println!("erro"),
     }
 
-    // let mut new_account = Account::create_account(first_name, second_name, age, balance, account_number)
+    // let mut 
 }
