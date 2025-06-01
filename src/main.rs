@@ -1,17 +1,47 @@
-use std::{
-    error,
-    io::{self, Write},
-};
-
 use rand::Rng;
+use serde::{Deserialize, Serialize};
+use std::fs;
+use std::io::{self, Write};
 
-#[derive(Debug)]
+const FILE_PATH: &str = "data.json";
+
+#[derive(Serialize, Deserialize, Debug)]
 struct Account {
     first_name: String,
     second_name: String,
     age: u32,
     balance: f32,
     account_number: String,
+}
+
+/// read the data from data.json file
+fn load_data() -> Vec<Account> {
+    let account_data: Vec<Account> = fs::read_to_string(FILE_PATH)
+        .ok()
+        .and_then(|data| serde_json::from_str(&data).ok())
+        .unwrap_or_default();
+    if account_data.is_empty() {
+        println!("No account found");
+    }
+    account_data
+}
+
+/// save the data vec on the data.json file
+
+fn save_data(account: &Vec<Account>) {
+    let data = serde_json::to_string_pretty(account).expect("failed to serialize the data");
+
+    println!("{:?}", data);
+    fs::write(FILE_PATH, data).expect("failed to write data to data.json file");
+}
+
+fn add_account(account: Account) {
+    let mut accounts = load_data();
+    accounts.push(account);
+
+    save_data(&accounts);
+
+    println!("{:?}", &accounts)
 }
 
 fn generate_account() -> String {
@@ -115,19 +145,22 @@ fn main() {
                 }
             };
 
-            let new_account = Account::create_account(first_name, second_name, age, 0.0, generate_account());
+            let new_account =
+                Account::create_account(first_name, second_name, age, 0.0, generate_account());
+            // let check_account = &new_account;
 
+            add_account(new_account);
             println!("New account created ✅");
-            println!("Account: {:#?}", new_account);
+            // println!("Account: {:#?}", check_account);
         }
         2 => {
-            println!("Enter tou name")
+            let amount = custom_input("Enter the deposit amout");
         }
-        3 => println!("3"),
+        3 => {}
         4 => println!("4"),
         5 => println!("cancel"),
         _ => println!("erro"),
     }
 
-    // let mut 
+    // let mut
 }
