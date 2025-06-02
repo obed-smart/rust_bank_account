@@ -1,37 +1,23 @@
 [
   {
     "first_name": "obed",
-    "second_name": "smart",
-    "age": 40,
-    "balance": 0.0,
-    "account_number": "0667039340"
+    "second_name": "chukwu",
+    "age": 59,
+    "balance": 200.0,
+    "account_number": "9087654456"
   },
   {
     "first_name": "obed",
     "second_name": "chukwu",
-    "age": 300,
+    "age": 30,
     "balance": 0.0,
-    "account_number": "7604196303"
+    "account_number": "8064956305"
   },
   {
     "first_name": "obed",
-    "second_name": "chukwy",
-    "age": 89,
-    "balance": 0.0,
-    "account_number": "0616668040"
-  },
-  {
-    "first_name": "mike",
-    "second_name": "jude",
+    "second_name": "chukwu",
     "age": 40,
     "balance": 0.0,
-    "account_number": "4233897631"
-  },
-  {
-    "first_name": "obed",
-    "second_name": "smart",
-    "age": 40,
-    "balance": 0.0,
-    "account_number": "5970433320"
+    "account_number": "0772829796"
   }
 ]

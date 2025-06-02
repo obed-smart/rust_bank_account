@@ -1,7 +1,7 @@
 use rand::Rng;
 use serde::{Deserialize, Serialize};
-use std::fs;
 use std::io::{self, Write};
+use std::{fs, option};
 
 const FILE_PATH: &str = "data.json";
 
@@ -31,7 +31,6 @@ fn load_data() -> Vec<Account> {
 fn save_data(account: &Vec<Account>) {
     let data = serde_json::to_string_pretty(account).expect("failed to serialize the data");
 
-    println!("{:?}", data);
     fs::write(FILE_PATH, data).expect("failed to write data to data.json file");
 }
 
@@ -40,15 +39,16 @@ fn add_account(account: Account) {
     accounts.push(account);
 
     save_data(&accounts);
-
-    println!("{:?}", &accounts)
 }
 
+/// generate an account to the new user
 fn generate_account() -> String {
     let mut rng = rand::thread_rng();
 
     (0..10).map(|_| rng.gen_range(0..10).to_string()).collect()
 }
+
+/// custom input field for all input with the message
 fn custom_input(display_text: &str) -> String {
     println!("{display_text}");
     io::stdout().flush().unwrap();
@@ -62,13 +62,20 @@ fn custom_input(display_text: &str) -> String {
     input.trim().to_string()
 }
 
+/// get each user account buy name
+fn get_account_by_account_number(account_number: String) -> Option<Account> {
+    let accounts = load_data();
+
+    accounts
+        .into_iter()
+        .find(|account| account.account_number == account_number)
+}
+
 impl Account {
     // this is a method on the struct instance
-    fn deposit(&mut self, amout: f32) {
-        println!("Enter amount");
-        self.balance += &amout;
-        println!("deposit successfull ✅");
-    }
+    // fn deposit() {
+
+    // }
 
     fn check_balance(self) {
         println!(" your account balance is: {}", self.balance)
@@ -90,6 +97,12 @@ impl Account {
         }
     }
 }
+
+// fn clear() {
+//     let emply: Vec<Account> = Vec::new();
+
+//     save_data(&emply);
+// }
 
 fn main() {
     let action_btn = vec![
@@ -154,7 +167,33 @@ fn main() {
             // println!("Account: {:#?}", check_account);
         }
         2 => {
-            let amount = custom_input("Enter the deposit amout");
+            let accounts = load_data();
+
+            let account_number = custom_input("Enter you account number");
+
+            let account = get_account_by_account_number(account_number);
+
+            match account {
+                Some(mut account) => {
+                    let amount = custom_input("Énter you account number");
+
+                    let amount: f32 = match amount.trim().parse() {
+                        Ok(num) => num,
+                        Err(_) => {
+                            println!("invalid input! please enter a number on the age");
+                            return;
+                        }
+                    };
+
+                    account.balance += amount;
+
+                    save_data(&accounts);
+
+                    println!("Deposit successfull ✅")
+                }
+
+                None => println!("No account found ❌"),
+            }
         }
         3 => {}
         4 => println!("4"),
