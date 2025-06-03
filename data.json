@@ -3,7 +3,7 @@
     "first_name": "obed",
     "second_name": "chukwu",
     "age": 59,
-    "balance": 200.0,
+    "balance": 370.0,
     "account_number": "9087654456"
   },
   {
@@ -19,5 +19,12 @@
     "age": 40,
     "balance": 0.0,
     "account_number": "0772829796"
+  },
+  {
+    "first_name": "chukwu",
+    "second_name": "obed",
+    "age": 50,
+    "balance": 0.0,
+    "account_number": "4525366990"
   }
 ]
